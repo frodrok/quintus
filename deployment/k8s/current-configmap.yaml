@@ -1,0 +1,88 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  data:
+    config.yaml: |
+      issuer: http://dex.local.test
+
+      storage:
+        type: memory
+
+      web:
+        http: 0.0.0.0:5556
+
+      enablePasswordDB: true
+
+      staticPasswords:
+        - email: admin@example.com
+          hash: "$2a$12$HCxY9Yq1lPuv8YSc9fjsTeDvN3l0VlbsgcrkqTeMnb7CzsjIelSge"
+          username: admin
+          userID: "08a8684b-db88-4b73-90a9-3cd1661f5466"
+
+      staticClients:
+        - id: oauth2-proxy
+          name: oauth2-proxy
+          secret: proxy-secret
+          redirectURIs:
+            - http://queryexplorer.local.test/oauth2/callback
+            - http://whoami.local.test/oauth2/callback
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"config.yaml":"issuer: http://dex.local.test\n\nstorage:\n  type: memory\n\nweb:\n  http: 0.0.0.0:5556\n\nenablePasswordDB: true\n\nstaticPasswords:\n  - email: admin@example.com\n    hash: \"$2a$12$HCxY9Yq1lPuv8YSc9fjsTeDvN3l0VlbsgcrkqTeMnb7CzsjIelSge\"\n    username: admin\n    userID: \"08a8684b-db88-4b73-90a9-3cd1661f5466\"\n\nstaticClients:\n- id: oauth2-proxy\n  redirectURIs:\n  - http://whoami.local.test/oauth2/callback\n  - http://queryexplorer.local.test/oauth2/callback\n"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"dex-config","namespace":"quintus"}}
+    creationTimestamp: "2026-04-17T08:38:20Z"
+    name: dex-config
+    namespace: quintus
+    resourceVersion: "17146"
+    uid: 4ac95792-03b5-4f21-b5b8-4f9e1ecfa18c
+- apiVersion: v1
+  data:
+    ca.crt: |
+      -----BEGIN CERTIFICATE-----
+      MIIBdzCCAR2gAwIBAgIBADAKBggqhkjOPQQDAjAjMSEwHwYDVQQDDBhrM3Mtc2Vy
+      dmVyLWNhQDE3NzY0MTQ2MzkwHhcNMjYwNDE3MDgzMDM5WhcNMzYwNDE0MDgzMDM5
+      WjAjMSEwHwYDVQQDDBhrM3Mtc2VydmVyLWNhQDE3NzY0MTQ2MzkwWTATBgcqhkjO
+      PQIBBggqhkjOPQMBBwNCAATeJ+5PVBY5IRtbn3dp1CuVQH7U4TjomGKtY1tCrtv1
+      uyIoz0oJdCW4A/oFDOZxYCDKO8D8XIpkDHN8hIrajCmFo0IwQDAOBgNVHQ8BAf8E
+      BAMCAqQwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUtSK3/Yhk1qnwwNbQu92y
+      VHijt+owCgYIKoZIzj0EAwIDSAAwRQIgRpqsK/Ux2/Jj3eERzH+XIyxQmqFstuSc
+      V+ZNgLBTfxECIQD88z6tPm7rP8AMPobcMvNduRaVoB2nHoF0OVY5eTygOg==
+      -----END CERTIFICATE-----
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubernetes.io/description: Contains a CA bundle that can be used to verify the
+        kube-apiserver when using internal endpoints such as the internal service
+        IP or kubernetes.default.svc. No other usage is guaranteed across distributions
+        of Kubernetes clusters.
+    creationTimestamp: "2026-04-17T08:38:20Z"
+    name: kube-root-ca.crt
+    namespace: quintus
+    resourceVersion: "1862"
+    uid: a8bc6cfa-b82b-4a6b-ad59-108432099bbb
+- apiVersion: v1
+  data:
+    QE_ADHOC_GROUPS: qe-adhoc
+    QE_GROUP_SEPARATOR: ','
+    QE_HEADER_EMAIL: X-Auth-Request-Email
+    QE_HEADER_GROUPS: X-Auth-Request-Groups
+    QE_HEADER_NAME: X-Auth-Request-Preferred-Username
+    QE_HEADER_SUB: X-Auth-Request-User
+    QE_HTTP_ADDR: :8080
+    QE_LOGOUT_URL: http://queryexplorer.local.test:8080/oauth2/sign_out?rd=%2F
+    QE_PII_GROUPS: pii-approved,pii-support-partial
+    QE_ROLE_MAPPING: admin:qe-admins,editor:qe-editors,viewer:qe-viewers
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"QE_ADHOC_GROUPS":"qe-adhoc","QE_GROUP_SEPARATOR":",","QE_HEADER_EMAIL":"X-Auth-Request-Email","QE_HEADER_GROUPS":"X-Auth-Request-Groups","QE_HEADER_NAME":"X-Auth-Request-Preferred-Username","QE_HEADER_SUB":"X-Auth-Request-User","QE_HTTP_ADDR":":8080","QE_LOGOUT_URL":"http://queryexplorer.local.test:8080/oauth2/sign_out?rd=%2F","QE_PII_GROUPS":"pii-approved,pii-support-partial","QE_ROLE_MAPPING":"admin:qe-admins,editor:qe-editors,viewer:qe-viewers"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"queryexplorer-config","namespace":"quintus"}}
+    creationTimestamp: "2026-04-17T08:38:20Z"
+    name: queryexplorer-config
+    namespace: quintus
+    resourceVersion: "10444"
+    uid: 7595350b-cf3e-4df1-aac3-4999c34a324e
+kind: List
+metadata:
+  resourceVersion: ""

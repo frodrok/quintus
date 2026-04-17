@@ -1,0 +1,192 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"dex","namespace":"quintus"},"spec":{"internalTrafficPolicy":"Cluster","ipFamilies":["IPv4"],"ipFamilyPolicy":"SingleStack","ports":[{"port":5556,"protocol":"TCP","targetPort":5556}],"selector":{"app":"dex"},"sessionAffinity":"None","type":"ClusterIP"}}
+    creationTimestamp: "2026-04-17T09:27:28Z"
+    name: dex
+    namespace: quintus
+    resourceVersion: "10594"
+    uid: 77eab041-deb4-48c8-80af-a054c55f41bd
+  spec:
+    clusterIP: 10.43.146.227
+    clusterIPs:
+    - 10.43.146.227
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 5556
+      protocol: TCP
+      targetPort: 5556
+    selector:
+      app: dex
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"oauth2-proxy","namespace":"quintus"},"spec":{"internalTrafficPolicy":"Cluster","ipFamilies":["IPv4"],"ipFamilyPolicy":"SingleStack","ports":[{"port":4180,"protocol":"TCP","targetPort":4180}],"selector":{"app":"oauth2-proxy"},"sessionAffinity":"None","type":"ClusterIP"}}
+    creationTimestamp: "2026-04-17T09:27:29Z"
+    name: oauth2-proxy
+    namespace: quintus
+    resourceVersion: "10601"
+    uid: 0f6af9f8-23b8-49ad-b8bb-27a07445f25e
+  spec:
+    clusterIP: 10.43.205.63
+    clusterIPs:
+    - 10.43.205.63
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 4180
+      protocol: TCP
+      targetPort: 4180
+    selector:
+      app: oauth2-proxy
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"postgres","namespace":"quintus"},"spec":{"ports":[{"port":5432,"targetPort":5432}],"selector":{"app":"postgres"}}}
+    creationTimestamp: "2026-04-17T09:55:28Z"
+    name: postgres
+    namespace: quintus
+    resourceVersion: "16478"
+    uid: 0dcee2d4-f179-4baf-b6d4-25be2e1894ec
+  spec:
+    clusterIP: 10.43.125.140
+    clusterIPs:
+    - 10.43.125.140
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 5432
+      protocol: TCP
+      targetPort: 5432
+    selector:
+      app: postgres
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"queryexplorer","namespace":"quintus"},"spec":{"internalTrafficPolicy":"Cluster","ipFamilies":["IPv4"],"ipFamilyPolicy":"SingleStack","ports":[{"port":80,"protocol":"TCP","targetPort":8080}],"selector":{"app":"queryexplorer"},"sessionAffinity":"None","type":"ClusterIP"}}
+    creationTimestamp: "2026-04-17T09:27:29Z"
+    name: queryexplorer
+    namespace: quintus
+    resourceVersion: "10620"
+    uid: fb8f03b3-cb35-47bc-b7b0-27b0cdbec8c3
+  spec:
+    clusterIP: 10.43.128.177
+    clusterIPs:
+    - 10.43.128.177
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: queryexplorer
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"traefik","namespace":"quintus"},"spec":{"externalTrafficPolicy":"Cluster","internalTrafficPolicy":"Cluster","ipFamilies":["IPv4"],"ipFamilyPolicy":"SingleStack","ports":[{"name":"web","nodePort":30080,"port":80,"protocol":"TCP","targetPort":80},{"name":"websecure","nodePort":30443,"port":443,"protocol":"TCP","targetPort":443},{"name":"admin","nodePort":32542,"port":8080,"protocol":"TCP","targetPort":8080}],"selector":{"app":"traefik"},"sessionAffinity":"None","type":"NodePort"}}
+    creationTimestamp: "2026-04-17T09:37:00Z"
+    name: traefik
+    namespace: quintus
+    resourceVersion: "12386"
+    uid: 662c2302-2214-4065-ab06-06bcb05db784
+  spec:
+    clusterIP: 10.43.71.125
+    clusterIPs:
+    - 10.43.71.125
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: web
+      nodePort: 30080
+      port: 80
+      protocol: TCP
+      targetPort: 80
+    - name: websecure
+      nodePort: 30443
+      port: 443
+      protocol: TCP
+      targetPort: 443
+    - name: admin
+      nodePort: 32542
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: traefik
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"whoami","namespace":"quintus"},"spec":{"ports":[{"port":80,"targetPort":80}],"selector":{"app":"whoami"}}}
+    creationTimestamp: "2026-04-17T09:29:40Z"
+    name: whoami
+    namespace: quintus
+    resourceVersion: "11061"
+    uid: 93c88171-cb36-43af-8eef-0d2a2133c83f
+  spec:
+    clusterIP: 10.43.64.88
+    clusterIPs:
+    - 10.43.64.88
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app: whoami
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+kind: List
+metadata:
+  resourceVersion: ""

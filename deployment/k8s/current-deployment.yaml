@@ -1,0 +1,538 @@
+apiVersion: v1
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "6"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"deployment.kubernetes.io/revision":"9"},"generation":10,"name":"dex","namespace":"quintus"},"spec":{"progressDeadlineSeconds":600,"replicas":1,"revisionHistoryLimit":10,"selector":{"matchLabels":{"app":"dex"}},"strategy":{"rollingUpdate":{"maxSurge":"25%","maxUnavailable":"25%"},"type":"RollingUpdate"},"template":{"metadata":{"annotations":{"kubectl.kubernetes.io/restartedAt":"2026-04-17T07:06:59Z"},"labels":{"app":"dex"}},"spec":{"containers":[{"command":["/usr/local/bin/dex","serve","/etc/dex/config.yaml"],"image":"ghcr.io/dexidp/dex:v2.41.1","imagePullPolicy":"IfNotPresent","name":"dex","ports":[{"containerPort":5556,"protocol":"TCP"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","volumeMounts":[{"mountPath":"/etc/dex","name":"config"}]}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30,"volumes":[{"configMap":{"defaultMode":420,"name":"dex-config"},"name":"config"}]}}}}
+    creationTimestamp: "2026-04-17T09:27:07Z"
+    generation: 9
+    name: dex
+    namespace: quintus
+    resourceVersion: "17223"
+    uid: eefd13c4-eede-4b4f-895f-04fdf9fface2
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: dex
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2026-04-17T11:58:43+02:00"
+        creationTimestamp: null
+        labels:
+          app: dex
+      spec:
+        containers:
+        - command:
+          - /usr/local/bin/dex
+          - serve
+          - /etc/dex/config.yaml
+          image: ghcr.io/dexidp/dex:v2.41.1
+          imagePullPolicy: IfNotPresent
+          name: dex
+          ports:
+          - containerPort: 5556
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /etc/dex
+            name: config
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: dex-config
+          name: config
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-04-17T09:44:14Z"
+      lastUpdateTime: "2026-04-17T09:44:14Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2026-04-17T09:27:07Z"
+      lastUpdateTime: "2026-04-17T09:58:45Z"
+      message: ReplicaSet "dex-586cd5d7cc" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 9
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "24"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"oauth2-proxy","namespace":"quintus"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"oauth2-proxy"}},"strategy":{"rollingUpdate":{"maxSurge":"25%","maxUnavailable":"25%"},"type":"RollingUpdate"},"template":{"metadata":{"annotations":{"kubectl.kubernetes.io/restartedAt":"2026-04-17T07:06:59Z"},"labels":{"app":"oauth2-proxy"}},"spec":{"containers":[{"args":["--http-address=0.0.0.0:4180","--provider=oidc","--provider-display-name=Dex","--client-id=oauth2-proxy","--client-secret=$(OAUTH2_PROXY_CLIENT_SECRET)","--redirect-url=http://whoami.local.test/oauth2/callback","--oidc-issuer-url=http://dex.local.test","--skip-oidc-discovery=true","--login-url=http://dex.local.test/dex/auth","--redeem-url=http://dex.quintus.svc.cluster.local:5556/dex/token","--oidc-jwks-url=http://dex.quintus.svc.cluster.local:5556/dex/keys","--email-domain=*","--cookie-secret=Zm9vYmFyYmF6cXV4eHl6MTIzNDU2Nzg5","--cookie-secure=false","--reverse-proxy=true","--set-xauthrequest=true","--pass-access-token=true","--upstream=static://202"],"env":[{"name":"OAUTH2_PROXY_CLIENT_SECRET","valueFrom":{"secretKeyRef":{"key":"client-secret","name":"oauth2-proxy-secret"}}},{"name":"OAUTH2_PROXY_OIDC_ISSUER_URL","value":"http://dex.quintus.svc.cluster.local:5556/dex"}],"image":"quay.io/oauth2-proxy/oauth2-proxy:v7.6.0","imagePullPolicy":"IfNotPresent","name":"oauth2-proxy","ports":[{"containerPort":4180,"protocol":"TCP"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File"}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30}}}}
+    creationTimestamp: "2026-04-17T09:27:07Z"
+    generation: 27
+    name: oauth2-proxy
+    namespace: quintus
+    resourceVersion: "19015"
+    uid: b4ae8473-2213-4083-8399-f3e14f383e21
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: oauth2-proxy
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2026-04-17T12:05:11+02:00"
+        creationTimestamp: null
+        labels:
+          app: oauth2-proxy
+      spec:
+        containers:
+        - args:
+          - --http-address=0.0.0.0:4180
+          - --provider=oidc
+          - --provider-display-name=Dex
+          - --client-id=oauth2-proxy
+          - --client-secret=$(OAUTH2_PROXY_CLIENT_SECRET)
+          - --redirect-url=http://queryexplorer.local.test/oauth2/callback
+          - --oidc-issuer-url=http://dex.local.test
+          - --skip-oidc-discovery=true
+          - --insecure-oidc-skip-issuer-verification=true
+          - --login-url=http://dex.local.test/auth
+          - --redeem-url=http://dex.quintus.svc.cluster.local:5556/token
+          - --oidc-jwks-url=http://dex.quintus.svc.cluster.local:5556/keys
+          - --email-domain=*
+          - --cookie-secret=Zm9vYmFyYmF6cXV4eHl6MTIzNDU2Nzg5
+          - --cookie-secure=false
+          - --reverse-proxy=true
+          - --set-xauthrequest=true
+          - --pass-access-token=true
+          - --upstream=static://202
+          env:
+          - name: OAUTH2_PROXY_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                key: client-secret
+                name: oauth2-proxy-secret
+          image: quay.io/oauth2-proxy/oauth2-proxy:v7.6.0
+          imagePullPolicy: IfNotPresent
+          name: oauth2-proxy
+          ports:
+          - containerPort: 4180
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-04-17T10:07:14Z"
+      lastUpdateTime: "2026-04-17T10:07:14Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2026-04-17T09:27:07Z"
+      lastUpdateTime: "2026-04-17T10:07:14Z"
+      message: ReplicaSet "oauth2-proxy-5589b45bd9" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 27
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"postgres","namespace":"quintus"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"postgres"}},"template":{"metadata":{"labels":{"app":"postgres"}},"spec":{"containers":[{"env":[{"name":"POSTGRES_DB","value":"queryexplorer"},{"name":"POSTGRES_USER","value":"queryexplorer"},{"name":"POSTGRES_PASSWORD","value":"dev-only-not-for-prod"}],"image":"postgres:17-alpine","name":"postgres","ports":[{"containerPort":5432}],"volumeMounts":[{"mountPath":"/var/lib/postgresql/data","name":"pgdata"}]}],"volumes":[{"emptyDir":{},"name":"pgdata"}]}}}}
+    creationTimestamp: "2026-04-17T09:55:28Z"
+    generation: 1
+    name: postgres
+    namespace: quintus
+    resourceVersion: "16539"
+    uid: ad365a58-653c-4228-8b88-80c623351812
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: postgres
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: postgres
+      spec:
+        containers:
+        - env:
+          - name: POSTGRES_DB
+            value: queryexplorer
+          - name: POSTGRES_USER
+            value: queryexplorer
+          - name: POSTGRES_PASSWORD
+            value: dev-only-not-for-prod
+          image: postgres:17-alpine
+          imagePullPolicy: IfNotPresent
+          name: postgres
+          ports:
+          - containerPort: 5432
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: pgdata
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: pgdata
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-04-17T09:55:42Z"
+      lastUpdateTime: "2026-04-17T09:55:42Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2026-04-17T09:55:28Z"
+      lastUpdateTime: "2026-04-17T09:55:42Z"
+      message: ReplicaSet "postgres-65f55f7dcc" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "4"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"deployment.kubernetes.io/revision":"11"},"generation":11,"name":"queryexplorer","namespace":"quintus"},"spec":{"progressDeadlineSeconds":600,"replicas":1,"revisionHistoryLimit":10,"selector":{"matchLabels":{"app":"queryexplorer"}},"strategy":{"rollingUpdate":{"maxSurge":"25%","maxUnavailable":"25%"},"type":"RollingUpdate"},"template":{"metadata":{"annotations":{"kubectl.kubernetes.io/restartedAt":"2026-04-17T07:27:26Z"},"labels":{"app":"queryexplorer"}},"spec":{"containers":[{"env":[{"name":"QE_PII_GROUPS","valueFrom":{"configMapKeyRef":{"key":"QE_PII_GROUPS","name":"queryexplorer-config"}}},{"name":"QE_ADHOC_GROUPS","valueFrom":{"configMapKeyRef":{"key":"QE_ADHOC_GROUPS","name":"queryexplorer-config"}}},{"name":"QE_GROUP_SEPARATOR","valueFrom":{"configMapKeyRef":{"key":"QE_GROUP_SEPARATOR","name":"queryexplorer-config"}}},{"name":"QE_HEADER_SUB","valueFrom":{"configMapKeyRef":{"key":"QE_HEADER_SUB","name":"queryexplorer-config"}}},{"name":"QE_HTTP_ADDR","valueFrom":{"configMapKeyRef":{"key":"QE_HTTP_ADDR","name":"queryexplorer-config"}}},{"name":"QE_LOGOUT_URL","valueFrom":{"configMapKeyRef":{"key":"QE_LOGOUT_URL","name":"queryexplorer-config"}}},{"name":"QE_ROLE_MAPPING","valueFrom":{"configMapKeyRef":{"key":"QE_ROLE_MAPPING","name":"queryexplorer-config"}}},{"name":"QE_HEADER_EMAIL","valueFrom":{"configMapKeyRef":{"key":"QE_HEADER_EMAIL","name":"queryexplorer-config"}}},{"name":"QE_HEADER_GROUPS","valueFrom":{"configMapKeyRef":{"key":"QE_HEADER_GROUPS","name":"queryexplorer-config"}}},{"name":"QE_HEADER_NAME","valueFrom":{"configMapKeyRef":{"key":"QE_HEADER_NAME","name":"queryexplorer-config"}}},{"name":"QE_DB_DSN","valueFrom":{"secretKeyRef":{"key":"QE_DB_DSN","name":"queryexplorer-secrets"}}},{"name":"QE_DSN_ENCRYPTION_KEY","valueFrom":{"secretKeyRef":{"key":"QE_DSN_ENCRYPTION_KEY","name":"queryexplorer-secrets"}}},{"name":"QE_PROXY_SHARED_SECRET","valueFrom":{"secretKeyRef":{"key":"QE_PROXY_SHARED_SECRET","name":"queryexplorer-secrets"}}}],"image":"queryexplorer:dev","imagePullPolicy":"IfNotPresent","name":"queryexplorer","ports":[{"containerPort":80,"protocol":"TCP"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File"}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30}}}}
+    creationTimestamp: "2026-04-17T09:27:08Z"
+    generation: 7
+    name: queryexplorer
+    namespace: quintus
+    resourceVersion: "16652"
+    uid: 619b81b3-2c12-43bc-bc2f-72b6de3bf097
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: queryexplorer
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2026-04-17T11:55:42+02:00"
+        creationTimestamp: null
+        labels:
+          app: queryexplorer
+      spec:
+        containers:
+        - env:
+          - name: QE_PII_GROUPS
+            valueFrom:
+              configMapKeyRef:
+                key: QE_PII_GROUPS
+                name: queryexplorer-config
+          - name: QE_ADHOC_GROUPS
+            valueFrom:
+              configMapKeyRef:
+                key: QE_ADHOC_GROUPS
+                name: queryexplorer-config
+          - name: QE_GROUP_SEPARATOR
+            valueFrom:
+              configMapKeyRef:
+                key: QE_GROUP_SEPARATOR
+                name: queryexplorer-config
+          - name: QE_HEADER_SUB
+            valueFrom:
+              configMapKeyRef:
+                key: QE_HEADER_SUB
+                name: queryexplorer-config
+          - name: QE_HTTP_ADDR
+            valueFrom:
+              configMapKeyRef:
+                key: QE_HTTP_ADDR
+                name: queryexplorer-config
+          - name: QE_LOGOUT_URL
+            valueFrom:
+              configMapKeyRef:
+                key: QE_LOGOUT_URL
+                name: queryexplorer-config
+          - name: QE_ROLE_MAPPING
+            valueFrom:
+              configMapKeyRef:
+                key: QE_ROLE_MAPPING
+                name: queryexplorer-config
+          - name: QE_HEADER_EMAIL
+            valueFrom:
+              configMapKeyRef:
+                key: QE_HEADER_EMAIL
+                name: queryexplorer-config
+          - name: QE_HEADER_GROUPS
+            valueFrom:
+              configMapKeyRef:
+                key: QE_HEADER_GROUPS
+                name: queryexplorer-config
+          - name: QE_HEADER_NAME
+            valueFrom:
+              configMapKeyRef:
+                key: QE_HEADER_NAME
+                name: queryexplorer-config
+          - name: QE_DB_DSN
+            valueFrom:
+              secretKeyRef:
+                key: QE_DB_DSN
+                name: queryexplorer-secrets
+          - name: QE_DSN_ENCRYPTION_KEY
+            valueFrom:
+              secretKeyRef:
+                key: QE_DSN_ENCRYPTION_KEY
+                name: queryexplorer-secrets
+          - name: QE_PROXY_SHARED_SECRET
+            valueFrom:
+              secretKeyRef:
+                key: QE_PROXY_SHARED_SECRET
+                name: queryexplorer-secrets
+          image: queryexplorer:latest
+          imagePullPolicy: Never
+          name: queryexplorer
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-04-17T09:54:37Z"
+      lastUpdateTime: "2026-04-17T09:54:37Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2026-04-17T09:54:36Z"
+      lastUpdateTime: "2026-04-17T09:55:58Z"
+      message: ReplicaSet "queryexplorer-ccd4f76c" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 7
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"deployment.kubernetes.io/revision":"5"},"generation":6,"name":"traefik","namespace":"quintus"},"spec":{"progressDeadlineSeconds":600,"replicas":1,"revisionHistoryLimit":10,"selector":{"matchLabels":{"app":"traefik"}},"strategy":{"rollingUpdate":{"maxSurge":"25%","maxUnavailable":"25%"},"type":"RollingUpdate"},"template":{"metadata":{"annotations":{"kubectl.kubernetes.io/restartedAt":"2026-04-17T07:06:59Z"},"labels":{"app":"traefik"}},"spec":{"containers":[{"args":["--providers.kubernetescrd","--providers.kubernetesingress","--entrypoints.web.address=:80","--entrypoints.websecure.address=:443","--api.insecure=true","--api.dashboard=true","--log.level=INFO","--accesslog=true"],"image":"traefik:v3.6.13","imagePullPolicy":"IfNotPresent","name":"traefik","ports":[{"containerPort":80,"name":"web","protocol":"TCP"},{"containerPort":443,"name":"websecure","protocol":"TCP"},{"containerPort":8080,"name":"admin","protocol":"TCP"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File"}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"serviceAccount":"traefik","serviceAccountName":"traefik","terminationGracePeriodSeconds":30}}}}
+    creationTimestamp: "2026-04-17T09:37:00Z"
+    generation: 1
+    name: traefik
+    namespace: quintus
+    resourceVersion: "12456"
+    uid: 17b3fbf7-9884-405f-b3d0-c3bf91743a0b
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: traefik
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2026-04-17T07:06:59Z"
+        creationTimestamp: null
+        labels:
+          app: traefik
+      spec:
+        containers:
+        - args:
+          - --providers.kubernetescrd
+          - --providers.kubernetesingress
+          - --entrypoints.web.address=:80
+          - --entrypoints.websecure.address=:443
+          - --api.insecure=true
+          - --api.dashboard=true
+          - --log.level=INFO
+          - --accesslog=true
+          image: traefik:v3.6.13
+          imagePullPolicy: IfNotPresent
+          name: traefik
+          ports:
+          - containerPort: 80
+            name: web
+            protocol: TCP
+          - containerPort: 443
+            name: websecure
+            protocol: TCP
+          - containerPort: 8080
+            name: admin
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: traefik
+        serviceAccountName: traefik
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-04-17T09:37:11Z"
+      lastUpdateTime: "2026-04-17T09:37:11Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2026-04-17T09:37:00Z"
+      lastUpdateTime: "2026-04-17T09:37:11Z"
+      message: ReplicaSet "traefik-744fc867" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"whoami","namespace":"quintus"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"whoami"}},"template":{"metadata":{"labels":{"app":"whoami"}},"spec":{"containers":[{"image":"traefik/whoami","name":"whoami","ports":[{"containerPort":80}]}]}}}}
+    creationTimestamp: "2026-04-17T09:29:40Z"
+    generation: 1
+    name: whoami
+    namespace: quintus
+    resourceVersion: "11092"
+    uid: 7d41cb06-0a83-43ab-8fe4-e9daaac30efa
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: whoami
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: whoami
+      spec:
+        containers:
+        - image: traefik/whoami
+          imagePullPolicy: Always
+          name: whoami
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-04-17T09:29:43Z"
+      lastUpdateTime: "2026-04-17T09:29:43Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2026-04-17T09:29:40Z"
+      lastUpdateTime: "2026-04-17T09:29:43Z"
+      message: ReplicaSet "whoami-64f6cf779d" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+kind: List
+metadata:
+  resourceVersion: ""

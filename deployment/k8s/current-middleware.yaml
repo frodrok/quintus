@@ -1,0 +1,65 @@
+apiVersion: v1
+items:
+- apiVersion: traefik.io/v1alpha1
+  kind: Middleware
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"traefik.io/v1alpha1","kind":"Middleware","metadata":{"annotations":{},"name":"inject-proxy-secret","namespace":"quintus"},"spec":{"headers":{"customRequestHeaders":{"X-Auth-Proxy-Secret":"dev-proxy-secret-change-me"}}}}
+    creationTimestamp: "2026-04-17T10:06:36Z"
+    generation: 2
+    name: inject-proxy-secret
+    namespace: quintus
+    resourceVersion: "19163"
+    uid: 75096c59-4880-45c3-92ef-5136f4e23a27
+  spec:
+    headers:
+      customRequestHeaders:
+        X-Auth-Proxy-Secret: dev-proxy-secret-change-me
+        X-Auth-Request-Groups: qe-admins
+- apiVersion: traefik.io/v1alpha1
+  kind: Middleware
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"traefik.io/v1alpha1","kind":"Middleware","metadata":{"annotations":{},"generation":6,"name":"oauth-auth","namespace":"quintus"},"spec":{"forwardAuth":{"address":"http://oauth2-proxy.quintus.svc.cluster.local:4180/oauth2/auth","authResponseHeaders":["X-Auth-Request-User","X-Auth-Request-Email","X-Auth-Request-Preferred-Username","X-Auth-Request-Access-Token","Authorization"],"trustForwardHeader":true}}}
+    creationTimestamp: "2026-04-17T09:27:45Z"
+    generation: 2
+    name: oauth-auth
+    namespace: quintus
+    resourceVersion: "17607"
+    uid: c23833b8-a97f-46a0-904c-1ad2355d355e
+  spec:
+    forwardAuth:
+      address: http://oauth2-proxy.quintus.svc.cluster.local:4180/oauth2/auth
+      authResponseHeaders:
+      - X-Auth-Request-User
+      - X-Auth-Request-Email
+      - X-Auth-Request-Preferred-Username
+      - X-Auth-Request-Access-Token
+      - Authorization
+      - X-Auth-Proxy-Secret
+      trustForwardHeader: true
+- apiVersion: traefik.io/v1alpha1
+  kind: Middleware
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"traefik.io/v1alpha1","kind":"Middleware","metadata":{"annotations":{},"generation":1,"name":"oauth-errors","namespace":"quintus"},"spec":{"errors":{"query":"/oauth2/sign_in?rd={url}","service":{"name":"oauth2-proxy","port":4180},"status":["401-403"]}}}
+    creationTimestamp: "2026-04-17T09:27:45Z"
+    generation: 1
+    name: oauth-errors
+    namespace: quintus
+    resourceVersion: "10682"
+    uid: c08e5e7e-df62-43ef-a24e-c80d8103bf75
+  spec:
+    errors:
+      query: /oauth2/sign_in?rd={url}
+      service:
+        name: oauth2-proxy
+        port: 4180
+      status:
+      - 401-403
+kind: List
+metadata:
+  resourceVersion: ""
