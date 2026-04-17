@@ -20,27 +20,31 @@ type Identity struct {
 	Email  string
 	Name   string
 	Groups []string
-	Role   string // admin | editor | viewer
+	Role   string
 }
 
-// HasGroup reports membership in a specific group.
-func (i *Identity) HasGroup(g string) bool {
-	for _, x := range i.Groups {
-		if x == g {
+func (i Identity) HasGroup(group string) bool {
+	for _, g := range i.Groups {
+		if g == group {
 			return true
 		}
 	}
 	return false
 }
 
-// HasAnyGroup reports membership in any of the provided groups.
-func (i *Identity) HasAnyGroup(gs []string) bool {
-	for _, g := range gs {
-		if i.HasGroup(g) {
+func (i Identity) HasAnyGroup(groups []string) bool {
+	for _, want := range groups {
+		if i.HasGroup(want) {
 			return true
 		}
 	}
 	return false
+}
+
+var rank = map[string]int{
+	"viewer": 1,
+	"editor": 2,
+	"admin":  3,
 }
 
 type ctxKey struct{}
@@ -58,6 +62,30 @@ func FromContext(ctx context.Context) *Identity {
 // handles the mapping itself.
 var errNoProxySecret = errors.New("missing or invalid proxy secret")
 var errMissingIdentity = errors.New("missing identity headers")
+
+func highestRole(groups []string, mapping map[string]string) string {
+	rank := map[string]int{
+		"viewer": 1,
+		"editor": 2,
+		"admin":  3,
+	}
+
+	best := ""
+	bestRank := 0
+
+	for _, g := range groups {
+		role, ok := mapping[g]
+		if !ok {
+			continue
+		}
+		if rank[role] > bestRank {
+			best = role
+			bestRank = rank[role]
+		}
+	}
+
+	return best
+}
 
 // Middleware verifies the proxy shared secret and extracts identity headers.
 // On failure it writes 401 or 403 and stops the chain.

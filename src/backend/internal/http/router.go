@@ -19,30 +19,44 @@ import (
 //go:embed web/dist/*
 var spaFS embed.FS
 
-func NewRouter(cfg *config.Config) http.Handler {
+func NewRouter(cfg *config.Config, deps *Deps) http.Handler {
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Recoverer)
 
-	r.Get("/healthz", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write([]byte("ok"))
-	})
-	r.Get("/readyz", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write([]byte("ok"))
-	})
+	r.Get("/healthz", deps.Healthz)
+	r.Get("/readyz", deps.Readyz)
 
 	r.Route("/api", func(r chi.Router) {
-		r.Use(identity.Middleware(cfg))
-		r.Get("/me", handleMe(cfg))
-	})
+	r.Use(identity.Middleware(cfg))
 
-	// Serve the SPA for everything else.
+	r.Get("/me", deps.HandleMe)
+	r.Get("/logout", deps.HandleLogout)
+
+	r.Get("/queries", deps.ListQueries)
+	r.With(identity.RequireRole("editor")).Post("/queries", deps.CreateQuery)
+	r.Get("/queries/{id}", deps.GetQuery)
+	r.With(identity.RequireRole("editor")).Put("/queries/{id}", deps.UpdateQuery)
+
+	r.Post("/runs", deps.CreateRun)
+	r.Get("/runs/{id}", deps.GetRun)
+	r.Get("/runs/{id}/stream", deps.StreamRun)
+
+	r.With(identity.RequireRole("admin")).Get("/audit/runs", deps.ListAuditRuns)
+})
+
 	r.NotFound(spaHandler())
-
 	return r
+}
+
+func handleLogout(cfg *config.Config) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(map[string]string{
+			"url": cfg.LogoutURL,
+		})
+	}
 }
 
 func spaHandler() http.HandlerFunc {
@@ -55,17 +69,21 @@ func spaHandler() http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		p := strings.TrimPrefix(path.Clean(r.URL.Path), "/")
-		if p == "." {
+		if p == "." || p == "" {
 			p = "index.html"
 		}
 
-		// If the requested asset exists, serve it directly.
 		if _, err := fs.Stat(dist, p); err == nil {
 			fileServer.ServeHTTP(w, r)
 			return
 		}
 
-		// Otherwise hand back SPA entrypoint so client-side routing works.
+		// Do not serve index.html for missing asset files.
+		if strings.HasPrefix(p, "assets/") || strings.Contains(path.Base(p), ".") {
+			http.NotFound(w, r)
+			return
+		}
+
 		index, err := fs.ReadFile(dist, "index.html")
 		if err != nil {
 			http.Error(w, "index.html not found", http.StatusInternalServerError)
@@ -78,8 +96,10 @@ func spaHandler() http.HandlerFunc {
 }
 
 // handleMe returns the current identity, role, and capability flags.
-func handleMe(cfg *config.Config) http.HandlerFunc {
-	type response struct {
+func (d *Deps) HandleMe(w http.ResponseWriter, r *http.Request) {
+	id := identity.FromContext(r.Context())
+
+	resp := struct {
 		Sub      string   `json:"sub"`
 		Email    string   `json:"email"`
 		Name     string   `json:"name"`
@@ -87,19 +107,21 @@ func handleMe(cfg *config.Config) http.HandlerFunc {
 		Role     string   `json:"role"`
 		CanPII   bool     `json:"can_pii"`
 		CanAdhoc bool     `json:"can_adhoc"`
+	}{
+		Sub:      id.Sub,
+		Email:    id.Email,
+		Name:     id.Name,
+		Groups:   id.Groups,
+		Role:     id.Role,
+		CanPII:   id.HasAnyGroup(d.Cfg.PIIGroups),
+		CanAdhoc: id.HasAnyGroup(d.Cfg.AdhocGroups),
 	}
-	return func(w http.ResponseWriter, r *http.Request) {
-		id := identity.FromContext(r.Context())
-		resp := response{
-			Sub:      id.Sub,
-			Email:    id.Email,
-			Name:     id.Name,
-			Groups:   id.Groups,
-			Role:     id.Role,
-			CanPII:   id.HasAnyGroup(cfg.PIIGroups),
-			CanAdhoc: id.HasAnyGroup(cfg.AdhocGroups),
-		}
-		w.Header().Set("Content-Type", "application/json")
-		_ = json.NewEncoder(w).Encode(resp)
-	}
+
+	writeJSON(w, http.StatusOK, resp)
+}
+
+func (d *Deps) HandleLogout(w http.ResponseWriter, r *http.Request) {
+	writeJSON(w, http.StatusOK, map[string]string{
+		"url": d.Cfg.LogoutURL,
+	})
 }
