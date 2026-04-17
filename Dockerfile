@@ -19,7 +19,7 @@ RUN go mod download
 
 COPY src/backend/ ./
 # Bring the built SPA into the backend source tree so embed.FS picks it up
-COPY --from=frontend /src/dist ./web/dist
+COPY --from=frontend /src/dist ./internal/http/web/dist
 
 # Static binary, trimmed
 RUN CGO_ENABLED=0 GOOS=linux go build \

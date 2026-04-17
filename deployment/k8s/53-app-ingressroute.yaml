@@ -1,0 +1,29 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"traefik.io/v1alpha1","kind":"IngressRoute","metadata":{"annotations":{},"name":"app","namespace":"quintus"},"spec":{"entryPoints":["web"],"routes":[{"kind":"Rule","match":"PathPrefix(`/oauth2/`)","services":[{"name":"oauth2-proxy","port":4180}]},{"kind":"Rule","match":"PathPrefix(`/`)","middlewares":[{"name":"oauth-errors"},{"name":"oauth-auth"}],"services":[{"name":"queryexplorer","port":80}]}]}}
+  creationTimestamp: "2026-04-17T06:25:53Z"
+  generation: 7
+  name: app
+  namespace: quintus
+  resourceVersion: "7435"
+  uid: 839cc97c-e8e3-49fc-ae56-c6402dc85a99
+spec:
+  entryPoints:
+  - web
+  routes:
+  - kind: Rule
+    match: PathPrefix(`/oauth2/`)
+    services:
+    - name: oauth2-proxy
+      port: 4180
+  - kind: Rule
+    match: PathPrefix(`/`)
+    middlewares:
+    - name: oauth-errors
+    - name: oauth-auth
+    services:
+    - name: queryexplorer
+      port: 80

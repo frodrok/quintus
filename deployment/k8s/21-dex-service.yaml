@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"dex","namespace":"quintus"},"spec":{"ports":[{"port":5556,"targetPort":5556}],"selector":{"app":"dex"}}}
+  creationTimestamp: "2026-04-17T06:18:46Z"
+  name: dex
+  namespace: quintus
+  resourceVersion: "610"
+  uid: 447e22c2-ce08-4b06-ae1b-af14220b8228
+spec:
+  clusterIP: 10.96.252.6
+  clusterIPs:
+  - 10.96.252.6
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - port: 5556
+    protocol: TCP
+    targetPort: 5556
+  selector:
+    app: dex
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

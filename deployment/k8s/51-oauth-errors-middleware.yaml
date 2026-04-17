@@ -1,0 +1,20 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"traefik.io/v1alpha1","kind":"Middleware","metadata":{"annotations":{},"name":"oauth-errors","namespace":"quintus"},"spec":{"errors":{"query":"/oauth2/sign_in?rd={url}","service":{"name":"oauth2-proxy","port":4180},"status":["401-403"]}}}
+  creationTimestamp: "2026-04-17T06:25:53Z"
+  generation: 1
+  name: oauth-errors
+  namespace: quintus
+  resourceVersion: "1456"
+  uid: 561ca747-2281-4f6f-8310-89cb8d1231d2
+spec:
+  errors:
+    query: /oauth2/sign_in?rd={url}
+    service:
+      name: oauth2-proxy
+      port: 4180
+    status:
+    - 401-403

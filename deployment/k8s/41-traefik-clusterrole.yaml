@@ -1,0 +1,54 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"rbac.authorization.k8s.io/v1","kind":"ClusterRole","metadata":{"annotations":{},"name":"traefik"},"rules":[{"apiGroups":[""],"resources":["services","endpoints","secrets","nodes","pods"],"verbs":["get","list","watch"]},{"apiGroups":["extensions","networking.k8s.io"],"resources":["ingresses","ingressclasses"],"verbs":["get","list","watch"]},{"apiGroups":["discovery.k8s.io"],"resources":["endpointslices"],"verbs":["get","list","watch"]},{"apiGroups":["traefik.io"],"resources":["ingressroutes","middlewares","traefikservices","tlsoptions","tlsstores","serverstransports"],"verbs":["get","list","watch"]}]}
+  creationTimestamp: "2026-04-17T06:18:45Z"
+  name: traefik
+  resourceVersion: "7487"
+  uid: 1b6c9532-e537-4e1d-87b4-17b6efe50374
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - services
+  - endpoints
+  - secrets
+  - nodes
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - extensions
+  - networking.k8s.io
+  resources:
+  - ingresses
+  - ingressclasses
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - discovery.k8s.io
+  resources:
+  - endpointslices
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - traefik.io
+  resources:
+  - ingressroutes
+  - middlewares
+  - traefikservices
+  - tlsoptions
+  - tlsstores
+  - serverstransports
+  verbs:
+  - get
+  - list
+  - watch

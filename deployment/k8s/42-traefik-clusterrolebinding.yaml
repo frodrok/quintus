@@ -1,0 +1,18 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"rbac.authorization.k8s.io/v1","kind":"ClusterRoleBinding","metadata":{"annotations":{},"name":"traefik"},"roleRef":{"apiGroup":"rbac.authorization.k8s.io","kind":"ClusterRole","name":"traefik"},"subjects":[{"kind":"ServiceAccount","name":"traefik","namespace":"quintus"}]}
+  creationTimestamp: "2026-04-17T06:18:45Z"
+  name: traefik
+  resourceVersion: "555"
+  uid: 47f73098-ce99-4fcf-b49a-0026dd017fab
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: traefik
+subjects:
+- kind: ServiceAccount
+  name: traefik
+  namespace: quintus

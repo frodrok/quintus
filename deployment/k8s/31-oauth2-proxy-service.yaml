@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"oauth2-proxy","namespace":"quintus"},"spec":{"ports":[{"port":4180,"targetPort":4180}],"selector":{"app":"oauth2-proxy"}}}
+  creationTimestamp: "2026-04-17T06:18:46Z"
+  name: oauth2-proxy
+  namespace: quintus
+  resourceVersion: "626"
+  uid: c3652392-74e1-446a-a6be-0a47776ec023
+spec:
+  clusterIP: 10.96.130.182
+  clusterIPs:
+  - 10.96.130.182
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - port: 4180
+    protocol: TCP
+    targetPort: 4180
+  selector:
+    app: oauth2-proxy
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

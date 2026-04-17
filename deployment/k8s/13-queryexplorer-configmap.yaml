@@ -1,0 +1,22 @@
+apiVersion: v1
+data:
+  QE_ADHOC_GROUPS: qe-adhoc
+  QE_GROUP_SEPARATOR: ','
+  QE_HEADER_EMAIL: X-Auth-Request-Email
+  QE_HEADER_GROUPS: X-Auth-Request-Groups
+  QE_HEADER_NAME: X-Auth-Request-Preferred-Username
+  QE_HEADER_SUB: X-Auth-Request-User
+  QE_HTTP_ADDR: :8080
+  QE_LOGOUT_URL: http://queryexplorer.local.test:8080/oauth2/sign_out?rd=%2F
+  QE_PII_GROUPS: pii-approved,pii-support-partial
+  QE_ROLE_MAPPING: admin:qe-admins,editor:qe-editors,viewer:qe-viewers
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","data":{"QE_ADHOC_GROUPS":"qe-adhoc","QE_GROUP_SEPARATOR":",","QE_HEADER_EMAIL":"X-Auth-Request-Email","QE_HEADER_GROUPS":"X-Auth-Request-Groups","QE_HEADER_NAME":"X-Auth-Request-Preferred-Username","QE_HEADER_SUB":"X-Auth-Request-User","QE_HTTP_ADDR":":8080","QE_LOGOUT_URL":"http://queryexplorer.local.test:8080/oauth2/sign_out?rd=%2F","QE_PII_GROUPS":"pii-approved,pii-support-partial","QE_ROLE_MAPPING":"admin:qe-admins,editor:qe-editors,viewer:qe-viewers"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"queryexplorer-config","namespace":"quintus"}}
+  creationTimestamp: "2026-04-17T06:18:46Z"
+  name: queryexplorer-config
+  namespace: quintus
+  resourceVersion: "637"
+  uid: 11c1cd83-0efc-4cad-bcd5-86e5c4bbba91
