@@ -1,0 +1,1 @@
+ALTER TABLE queries DROP COLUMN row_mask;

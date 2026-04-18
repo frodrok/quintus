@@ -20,6 +20,7 @@ type Config struct {
 	AdhocGroups       []string
 	LogoutURL         string
 	MaxUIRows         int
+	DSNEncryptionKey string
 }
 
 func Load() (*Config, error) {
@@ -37,6 +38,7 @@ func Load() (*Config, error) {
 		AdhocGroups:       splitCSV(os.Getenv("QE_ADHOC_GROUPS")),
 		LogoutURL:         os.Getenv("QE_LOGOUT_URL"),
 		MaxUIRows:         10000,
+		DSNEncryptionKey: os.Getenv("QE_DSN_ENCRYPTION_KEY"),
 	}
 
 	if cfg.ProxySharedSecret == "" {
@@ -45,6 +47,10 @@ func Load() (*Config, error) {
 	if len(cfg.RoleMapping) == 0 {
 		return nil, fmt.Errorf("QE_ROLE_MAPPING is required")
 	}
+
+	if cfg.DSNEncryptionKey == "" {
+    return nil, fmt.Errorf("QE_DSN_ENCRYPTION_KEY is required")
+}
 
 	return cfg, nil
 }

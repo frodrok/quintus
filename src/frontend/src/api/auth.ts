@@ -5,7 +5,7 @@ export type Me = {
   email: string
   name: string
   groups: string[]
-  role: 'viewer' | 'editor' | 'admin'
+  role: string
   can_pii: boolean
   can_adhoc: boolean
 }

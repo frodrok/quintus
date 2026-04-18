@@ -1,0 +1,1 @@
+ALTER TABLE queries ADD COLUMN row_mask JSONB NOT NULL DEFAULT 'null';

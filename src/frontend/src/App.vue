@@ -2,6 +2,16 @@
   <div v-if="auth.loaded" class="app-shell">
     <header class="app-header">
       <div class="title">QueryExplorer</div>
+      <nav class="nav">
+  <router-link to="/">Home</router-link>
+  <router-link v-if="auth.isAdmin" to="/connections">Connections</router-link>
+  <router-link v-if="auth.isAdmin" to="/connections">Audit</router-link>
+  <router-link v-if="auth.isEditor" to="/queries">Queries</router-link>
+  <router-link v-if="auth.canAdhoc" to="/explore">Explore</router-link>
+  <router-link to="/ai-explore">AI Explore</router-link>
+  <router-link to="/runs">Runs</router-link>
+  
+</nav>
       <div class="spacer" />
       <div v-if="auth.me" class="user">
         <span>{{ auth.me.email }}</span>
@@ -31,6 +41,9 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.nav { display: flex; gap: 16px; font-size: 14px; }
+.nav a { color: #2563eb; text-decoration: none; }
+.nav a.router-link-active { font-weight: 600; }
 .app-shell {
   min-height: 100vh;
   font-family: system-ui, sans-serif;

@@ -43,7 +43,19 @@ func NewRouter(cfg *config.Config, deps *Deps) http.Handler {
 	r.Get("/runs/{id}", deps.GetRun)
 	r.Get("/runs/{id}/stream", deps.StreamRun)
 
+	r.Get("/connections/{id}/schema", deps.GetConnectionSchema)
+
 	r.With(identity.RequireRole("admin")).Get("/audit/runs", deps.ListAuditRuns)
+
+	r.With(identity.RequireRole("admin")).Route("/connections", func(r chi.Router) {
+    r.Get("/", deps.ListConnections)
+    r.Post("/", deps.CreateConnection)
+    r.Get("/{id}", deps.GetConnection)
+    r.Put("/{id}", deps.UpdateConnection)
+    r.Delete("/{id}", deps.DeleteConnection)
+    r.Post("/{id}/test", deps.TestConnection)
+		
+})
 })
 
 	r.NotFound(spaHandler())

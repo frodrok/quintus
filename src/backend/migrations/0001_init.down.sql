@@ -1,3 +1,0 @@
-DROP TABLE IF EXISTS runs;
-DROP TABLE IF EXISTS queries;
-DROP TABLE IF EXISTS connections;

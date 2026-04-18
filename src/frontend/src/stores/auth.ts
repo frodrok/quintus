@@ -11,6 +11,7 @@ export const useAuthStore = defineStore('auth', {
     isViewer: (s) => !!s.me,
     isEditor: (s) => s.me?.role === 'editor' || s.me?.role === 'admin',
     isAdmin: (s) => s.me?.role === 'admin',
+    canAdhoc: (s) => s.me?.can_adhoc === true,
   },
 
   actions: {
