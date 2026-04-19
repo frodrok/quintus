@@ -18,10 +18,17 @@ services:
       retries: 10
 
   app:
-    build: ..
+    build: 
+      context: ..
+      args:
+        VITE_OLLAMA_URL: http://host.docker.internal:11434
+        VITE_OLLAMA_MODEL: lfm2:latest
+
     depends_on:
       postgres:
         condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       QE_DB_DSN: postgres://queryexplorer:dev-only-not-for-prod@postgres:5432/queryexplorer?sslmode=disable
       QE_PROXY_SHARED_SECRET: dev-proxy-secret-change-me
@@ -34,6 +41,8 @@ services:
       QE_HEADER_NAME: X-Auth-Request-Preferred-Username
       QE_HEADER_GROUPS: X-Auth-Request-Groups
       QE_LOGOUT_URL: /
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+      OLLAMA_MODEL: lfm2:latest
 
   mock-proxy:
     build: ./mock-proxy

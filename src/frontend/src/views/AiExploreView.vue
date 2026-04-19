@@ -184,8 +184,8 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { listConnections, getConnectionSchema, type Connection, type SchemaTable } from '../api/connections'
 import { createRun, type RunResult, downloadCSV, downloadExcel } from '../api/runs'
 
-const OLLAMA_URL = 'http://localhost:11434'
-const OLLAMA_MODEL = 'qwen2.5-coder:7b'
+const OLLAMA_URL = import.meta.env.VITE_OLLAMA_URL ?? 'http://localhost:11434'
+const OLLAMA_MODEL = import.meta.env.VITE_OLLAMA_MODEL ?? 'qwen2.5-coder:7b'
 
 const connections = ref<Connection[]>([])
 const selectedConnectionId = ref<string>('')
